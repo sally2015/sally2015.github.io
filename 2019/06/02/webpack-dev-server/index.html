@@ -8,21 +8,21 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>webpack-dev-server与webpack-dev-middleware | bingou&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="背景在一些小练习中，常常为了求快，就去复制网上一些 webpack-dev-server 的配置，但是其实并不适用于当前的版本，文章教程总会有时效性。">
+  <meta name="description" content="背景在一些小练习中，常常为了求快，就去复制网上一些 webpack-dev-server 的配置，但是其实并不适用于当前的版本，文章教程总会有时效性，还是要自己深入了解实现原理。">
 <meta name="keywords" content="webpack-dev-server">
 <meta property="og:type" content="article">
 <meta property="og:title" content="webpack-dev-server与webpack-dev-middleware">
 <meta property="og:url" content="http://yoursite.com/2019/06/02/webpack-dev-server/index.html">
 <meta property="og:site_name" content="bingou&#39;s blog">
-<meta property="og:description" content="背景在一些小练习中，常常为了求快，就去复制网上一些 webpack-dev-server 的配置，但是其实并不适用于当前的版本，文章教程总会有时效性。">
+<meta property="og:description" content="背景在一些小练习中，常常为了求快，就去复制网上一些 webpack-dev-server 的配置，但是其实并不适用于当前的版本，文章教程总会有时效性，还是要自己深入了解实现原理。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/2019/06/02/assets/webpack-dev-server/2019-06-02-15-02-12.png">
-<meta property="og:image" content="http://yoursite.com/2019/06/02/assets/webpack-dev-server/2019-06-02-15-04-11.png">
-<meta property="og:updated_time" content="2019-06-02T12:07:28.177Z">
+<meta property="og:image" content="http://yoursite.com/assets/webpack-dev-server/2019-06-02-15-02-12.png">
+<meta property="og:image" content="http://yoursite.com/assets/webpack-dev-server/2019-06-02-15-04-11.png">
+<meta property="og:updated_time" content="2019-06-02T12:20:39.729Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="webpack-dev-server与webpack-dev-middleware">
-<meta name="twitter:description" content="背景在一些小练习中，常常为了求快，就去复制网上一些 webpack-dev-server 的配置，但是其实并不适用于当前的版本，文章教程总会有时效性。">
-<meta name="twitter:image" content="http://yoursite.com/2019/06/02/assets/webpack-dev-server/2019-06-02-15-02-12.png">
+<meta name="twitter:description" content="背景在一些小练习中，常常为了求快，就去复制网上一些 webpack-dev-server 的配置，但是其实并不适用于当前的版本，文章教程总会有时效性，还是要自己深入了解实现原理。">
+<meta name="twitter:image" content="http://yoursite.com/assets/webpack-dev-server/2019-06-02-15-02-12.png">
   
     <link rel="alternative" href="/atom.xml" title="bingou&#39;s blog" type="application/atom+xml">
   
@@ -174,14 +174,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="背景">背景</h3><p><em>在一些小练习中，常常为了求快，就去复制网上一些 webpack-dev-server 的配置，但是其实并不适用于当前的版本，文章教程总会有时效性。</em></p>
+        <h3 id="背景">背景</h3><p><em>在一些小练习中，常常为了求快，就去复制网上一些 webpack-dev-server 的配置，但是其实并不适用于当前的版本，文章教程总会有时效性，还是要自己深入了解实现原理。</em></p>
 <a id="more"></a>
 <h3 id="热更新中的配置">热更新中的配置</h3><ul>
 <li>在 webpack-dev-srver 中只需要配置<code>hot:true</code>便可以实现热更新</li>
 <li>如果使用 webpack-dev-middleware，不但需要在 entry 中加入<code>webpack-dev-server/client,&#39;webpack/hot/dev-server&#39;</code>,还需要在 plugins 中加入<code>new webpack.HotModuleReplacementPlugin()</code></li>
 <li>网上的一些文章会将 webpack-dev-middleware 的配置加入到 webpack-dev-srver 中，比如这篇<a href="https://github.com/kingvid-chan/webpack2-lessons/tree/master/lesson2" target="_blank" rel="noopener">webpack2 热更新配置</a>.</li>
-<li>当然也有可能是版本的问题，这次的练习项目就直接把这里的配置复制过来了，当我使用的是 <a href="mailto:webpack-dev-server@3.4.1" target="_blank" rel="noopener">webpack-dev-server@3.4.1</a>，结果会导致 entry 中其实重复引用了<code>webpack-dev-server/client,&#39;webpack/hot/dev-server&#39;</code>文件，如下图<br><img src="../assets/webpack-dev-server/2019-06-02-15-02-12.png" alt="webpack-dev-server/2019-06-02-15-02-12.png"></li>
-<li>正确的 entry 应该是这样的<br><img src="../assets/webpack-dev-server/2019-06-02-15-04-11.png" alt="webpack-dev-server/2019-06-02-15-02-12.png"></li>
+<li>当然也有可能是版本的问题，这次的练习项目就直接把这里的配置复制过来了，当我使用的是 <a href="mailto:webpack-dev-server@3.4.1" target="_blank" rel="noopener">webpack-dev-server@3.4.1</a>，结果会导致 entry 中其实重复引用了<code>webpack-dev-server/client,&#39;webpack/hot/dev-server&#39;</code>文件，如下图<br><img src="/assets/webpack-dev-server/2019-06-02-15-02-12.png" alt="webpack-dev-server/2019-06-02-15-02-12.png"></li>
+<li>正确的 entry 应该是这样的<br><img src="/assets/webpack-dev-server/2019-06-02-15-04-11.png" alt="webpack-dev-server/2019-06-02-15-02-12.png"></li>
 </ul>
 <h3 id="webpack-dev-server_与_webpack-dev-middleware_的关系">webpack-dev-server 与 webpack-dev-middleware 的关系</h3><ul>
 <li>webpack-dev-middleware 只是一个中间件</li>
@@ -417,22 +417,6 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">indexedDB</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vue</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">webpack-dev-server</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">nightmare</a>
               </li>
              
@@ -441,7 +425,23 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">indexedDB</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">websocket</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">vue</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">webpack-dev-server</a>
               </li>
              
               <li class="article-tag-list-item">
