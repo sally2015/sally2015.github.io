@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2018/9 | bingou&#39;s blog</title>
+  <title>babel-polyfill的相关知识 | bingou&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="广东工业大学17届，目前就职于微众银行。">
-<meta name="keywords" content="前端，vue，webpack，javascript，html5，程序媛，css3，工程化，用户体验，数据分析">
-<meta property="og:type" content="website">
-<meta property="og:title" content="bingou&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/archives/2018/09/index.html">
+  <meta name="description" content="使用@babel/polyfill 可以让你在任何 es2015+的环境中编写代码，而不需要担心兼容性问题。它会在全局变量上添加一些类似于原生的方法。但是 webpack 一直以来配置都特别复杂，直到 webpack4 才开始做 0 配置。项目中如果需要 webpack 的配置可能都是 ctrl+c ctrl+v,没有及时去更新，会对 polyfill 有一些误解，比如说，项目中会同时出现babe">
+<meta name="keywords" content="babel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="babel-polyfill的相关知识">
+<meta property="og:url" content="http://yoursite.com/2019/06/25/polyfill/index.html">
 <meta property="og:site_name" content="bingou&#39;s blog">
-<meta property="og:description" content="广东工业大学17届，目前就职于微众银行。">
+<meta property="og:description" content="使用@babel/polyfill 可以让你在任何 es2015+的环境中编写代码，而不需要担心兼容性问题。它会在全局变量上添加一些类似于原生的方法。但是 webpack 一直以来配置都特别复杂，直到 webpack4 才开始做 0 配置。项目中如果需要 webpack 的配置可能都是 ctrl+c ctrl+v,没有及时去更新，会对 polyfill 有一些误解，比如说，项目中会同时出现babe">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-25T07:39:57.920Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="bingou&#39;s blog">
-<meta name="twitter:description" content="广东工业大学17届，目前就职于微众银行。">
+<meta name="twitter:title" content="babel-polyfill的相关知识">
+<meta name="twitter:description" content="使用@babel/polyfill 可以让你在任何 es2015+的环境中编写代码，而不需要担心兼容性问题。它会在全局变量上添加一些类似于原生的方法。但是 webpack 一直以来配置都特别复杂，直到 webpack4 才开始做 0 配置。项目中如果需要 webpack 的配置可能都是 ctrl+c ctrl+v,没有及时去更新，会对 polyfill 有一些误解，比如说，项目中会同时出现babe">
   
     <link rel="alternative" href="/atom.xml" title="bingou&#39;s blog" type="application/atom+xml">
   
@@ -150,98 +151,214 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-polyfill" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/09/13/indexedDB/" class="archive-article-date">
-  	<time datetime="2018-09-13T11:17:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-13</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/09/13/indexedDB/">indexedDB存储失败分析</a>
+    <h1 class="article-title" itemprop="name">
+      babel-polyfill的相关知识
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/06/25/polyfill/" class="archive-article-date">
+  	<time datetime="2019-06-25T07:39:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用@babel/polyfill 可以让你在任何 es2015+的环境中编写代码，而不需要担心兼容性问题。它会在全局变量上添加一些类似于原生的方法。但是 webpack 一直以来配置都特别复杂，直到 webpack4 才开始做 0 配置。项目中如果需要 webpack 的配置可能都是 ctrl+c ctrl+v,没有及时去更新，会对 polyfill 有一些误解，比如说，项目中会同时出现<code>babel-plugin-transform-runtime</code>和<code>babel-polyfill</code>，在已经使用了<code>babel-polyfill</code>的基础上还是会担心使用新语法带来的问题。这篇文章将会解答一些与<code>babel-polyfill</code>相关的问题。</p>
+<h2 id="polyfill_与_core-js">polyfill 与 core-js</h2><ul>
+<li>简单来说<code>polyfill</code>包括了<code>core-js</code>和<code>regenerator-runtime</code>(转义 async 和 await 的包)。</li>
+<li>而且 babel7.4.0 开始@babel/polyfill 改成直接引入<code>core-js</code>和<code>regenerator-runtime</code>了<blockquote>
+<p>As of Babel 7.4.0, this package has been deprecated in favor of directly including core-js/stable (to polyfill ECMAScript features) and regenerator-runtime/runtime (needed to use transpiled generator functions):</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"core-js/stable"</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">"regenerator-runtime/runtime"</span>;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<h2 id="polyfill_与_preset-env">polyfill 与 preset-env</h2><p><code>preset-env</code>中我们需要关注以下两个属性</p>
+<h4 id="targets">targets</h4><p>targets 可以设置 polyfill 引入哪些方法的转义，因为<code>preset-env</code>有一个内置的 json 文件,可以根据用户设置过滤所需要 polyfill 的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">// corejs2-built-ins.json</span><br><span class="line">    &#123;</span><br><span class="line">    &quot;es6.array.copy-within&quot;: &#123;</span><br><span class="line">        &quot;chrome&quot;: &quot;45&quot;,</span><br><span class="line">        &quot;edge&quot;: &quot;12&quot;,</span><br><span class="line">        &quot;firefox&quot;: &quot;32&quot;,</span><br><span class="line">        &quot;safari&quot;: &quot;9&quot;,</span><br><span class="line">        &quot;node&quot;: &quot;4&quot;,</span><br><span class="line">        &quot;ios&quot;: &quot;9&quot;,</span><br><span class="line">        &quot;samsung&quot;: &quot;5&quot;,</span><br><span class="line">        &quot;opera&quot;: &quot;32&quot;,</span><br><span class="line">        &quot;electron&quot;: &quot;0.35&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;es6.array.every&quot;: &#123;</span><br><span class="line">        &quot;chrome&quot;: &quot;5&quot;,</span><br><span class="line">        &quot;opera&quot;: &quot;10.10&quot;,</span><br><span class="line">        &quot;edge&quot;: &quot;12&quot;,</span><br><span class="line">        &quot;firefox&quot;: &quot;2&quot;,</span><br><span class="line">        &quot;safari&quot;: &quot;3.1&quot;,</span><br><span class="line">        &quot;node&quot;: &quot;0.10&quot;,</span><br><span class="line">        &quot;ie&quot;: &quot;9&quot;,</span><br><span class="line">        &quot;android&quot;: &quot;4&quot;,</span><br><span class="line">        &quot;ios&quot;: &quot;6&quot;,</span><br><span class="line">        &quot;phantom&quot;: &quot;2&quot;,</span><br><span class="line">        &quot;samsung&quot;: &quot;2.1&quot;,</span><br><span class="line">        &quot;electron&quot;: &quot;1.1&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">    ……</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">// 根据项目需要兼容的最低版本</span><br><span class="line">&#123;</span><br><span class="line">  &quot;targets&quot;: &#123;</span><br><span class="line">    &quot;chrome&quot;: &quot;58&quot;,</span><br><span class="line">    &quot;ie&quot;: &quot;11&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="useBuiltIns">useBuiltIns</h4><p>useBuiltIns 有两个特别有用的属性，usage 和 entry,使用两个属性都是直接引用<code>core-js</code>对应的包。</p>
+<ul>
+<li><p>entry 的用法：项目中<code>import &quot;@babel/polyfill&quot;;</code>persets 的 options 中使用<code>useBuiltIns: &quot;entry&quot;</code>,配合 targets 选项，只 import 最低版本所需要的方法垫片</p>
+</li>
+<li><p>usage 的用法：只需要在<code>persets的options中使用</code>useBuiltIns: “usage”<code>即可将所有项目中用到所需要在最低浏览器版本不兼容的方法垫片，例如 includes 方法就会自动</code>import “core-js/modules/es6.string.includes”;`</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//demo</span></span><br><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"test123"</span>.includes(<span class="string">"test"</span>));</span><br><span class="line"><span class="comment">// webpack.config.js</span></span><br><span class="line">use: &#123;</span><br><span class="line">    loader: <span class="string">"babel-loader"</span>,</span><br><span class="line">    options: &#123;</span><br><span class="line">        presets: [</span><br><span class="line">            [</span><br><span class="line">                <span class="string">"@babel/preset-env"</span>,</span><br><span class="line">                &#123;</span><br><span class="line">                    targets: &#123;</span><br><span class="line">                        chrome: <span class="string">"58"</span>,</span><br><span class="line">                        ie: <span class="string">"11"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    useBuiltIns: <span class="string">"usage"</span></span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>因为 includes 在 ie11 中不兼容，打包结果：</p>
+<ul>
+<li>不使用<code>@babel/preset-env</code>,打包后文件 <em>900 多 bytes 不到 1kb</em>，不能兼容低版本浏览器</li>
+<li>使用<code>preset-env</code>+<code>useBuiltIns: &quot;usage&quot;</code>，babel 识别到使用了 includes 方法，加入 polyfill 的方法有[ ‘es6.string.includes’, ‘es7.array.includes’ ]，打包后文件为 <em>6.56kb</em></li>
+<li>使用<code>preset-env</code>+<code>useBuiltIns: &quot;entry&quot;</code>，并且手动 import <code>@babel/polyfill</code>(使用 useBuiltIns webpack 都会建议不需要手动 import polyfill，如果它检测到用户已经 import 了会提示 useBuiltIns 选用 entry 属性)，polyfill 的几十个方法，也就是按照 targets 的配置将所有需要 polyfill 方法都打包进来，打包后文件为 <em>76.7kb</em></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">'es6.array.copy-within'</span>,</span><br><span class="line">  <span class="string">'es6.array.fill'</span>,</span><br><span class="line">  <span class="string">'es6.array.find'</span>,</span><br><span class="line">  <span class="string">'es6.array.find-index'</span>,</span><br><span class="line">  <span class="string">'es7.array.flat-map'</span>,</span><br><span class="line">  <span class="string">'es6.array.from'</span>,</span><br><span class="line">  <span class="string">'es7.array.includes'</span>,</span><br><span class="line">  ……</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>只使用 babel-loader+<code>@babel/preset-env</code>，打包文件大小为 <em>86.3kb</em></p>
+</li>
+<li><p>因此，如果项目本身是有兼容性要求的话，一般都会使用 babel-loader 做兼容，因为很常见的 array.from 也是要做 polyfill 的，加上 preset-env + useBuiltIns 按需加载使用一些新语法其实不需要太担心包大小的问题，也不需要手动 import <code>@babel/polyfill</code></p>
+</li>
+</ul>
+</li>
+<li><p>虽然在<a href="https://babeljs.io/docs/en/babel-preset-env" target="_blank" rel="noopener">babel-preset-env</a>官方文档中看到<code>usage</code>还是 experiment 状态，但是可以在 vue-cli 的源码看到默认打包的 app 的 presets 配置里 useBuiltIns 是<code>usage</code>，所以可以放心的用（其实 babel6 的时候<code>usage</code>就已经是 experiment，babel7 也还是）</p>
+<p><code>/vue-cli/packages/@vue/babel-preset-app/index.js</code></p>
+</li>
+<li><p>需要注意的是如果你使用的不是 TC39 stage4 的提案，你还是需要自己手动去设置<code>babel-plugin</code>,<code>preset-env</code>不会帮你引入其他 stage 的语法垫片</p>
+</li>
+</ul>
+<h2 id="polyfill_与_plugin-transform-runtime">polyfill 与 plugin-transform-runtime</h2><ul>
+<li>如果有长时间使用过 webpack，一定不会对<code>babel-plugin-transform-runtime</code>这个插件陌生,大家都有做兼容的环境的作用，甚至有些项目还会看到同时使用<code>babel-polyfill</code>和<code>babel-plugin-transform-runtime</code>，这种做法貌似在<code>babel-preset-env</code>出来之前是有一定道理的。</li>
+<li>实际上<code>transform-runtime</code>的转换是非侵入性的，也就是它不会污染你的原有的方法，比如挂在 Array 原型上的 includes 方法就只能使用<code>babel-polyfill</code></li>
+<li><code>transform-runtime</code>的使用场景应该是库，遇到需要转换的方法它会另起一个名字，否则会直接影响使用库的业务代码，平常的项目使用<code>babel-polyfill</code>即可。</li>
+</ul>
+<h2 id="polyfill-io">polyfill.io</h2><ul>
+<li>虽然 presets-env+实际压缩已经能够优化掉大部分体积的 polyfill，但是对于一些最新浏览器版本来说，任何的 polyfill 都是浪费资源的。</li>
+<li>这时候 polyfill.io 能够解决这个问题。polyfill.io 以服务端渲染的方式从请求中获取到 useragent 的信息，然后返回对应的 polyfill。但<a href="https://zhuanlan.zhihu.com/p/27777995" target="_blank" rel="noopener">据说</a>是因为浏览器版本太多，国内还有套壳的 360/qq 等浏览器，ua 要是判断失误没有其他回退的方案，因此没有办法广泛应用起来。</li>
+</ul>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">indexedDB</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">babel</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/06/25/polyfill/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/09/11/bigDataTable/" class="archive-article-date">
-  	<time datetime="2018-09-11T04:22:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-11</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/06/02/webpack-dev-server/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">webpack-dev-server与webpack-dev-middleware</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/09/11/bigDataTable/">vueTable大数据展示优化</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">vue</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -264,8 +381,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
