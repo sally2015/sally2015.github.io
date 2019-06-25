@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="bingou&#39;s blog">
 <meta property="og:description" content="使用@babel/polyfill 可以让你在任何 es2015+的环境中编写代码，而不需要担心兼容性问题。它会在全局变量上添加一些类似于原生的方法。但是 webpack 一直以来配置都特别复杂，直到 webpack4 才开始做 0 配置。项目中如果需要 webpack 的配置可能都是 ctrl+c ctrl+v,没有及时去更新，会对 polyfill 有一些误解，比如说，项目中会同时出现babe">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-25T07:39:57.920Z">
+<meta property="og:updated_time" content="2019-06-25T07:42:05.332Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="babel-polyfill的相关知识">
 <meta name="twitter:description" content="使用@babel/polyfill 可以让你在任何 es2015+的环境中编写代码，而不需要担心兼容性问题。它会在全局变量上添加一些类似于原生的方法。但是 webpack 一直以来配置都特别复杂，直到 webpack4 才开始做 0 配置。项目中如果需要 webpack 的配置可能都是 ctrl+c ctrl+v,没有及时去更新，会对 polyfill 有一些误解，比如说，项目中会同时出现babe">
@@ -172,6 +172,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>使用@babel/polyfill 可以让你在任何 es2015+的环境中编写代码，而不需要担心兼容性问题。它会在全局变量上添加一些类似于原生的方法。但是 webpack 一直以来配置都特别复杂，直到 webpack4 才开始做 0 配置。项目中如果需要 webpack 的配置可能都是 ctrl+c ctrl+v,没有及时去更新，会对 polyfill 有一些误解，比如说，项目中会同时出现<code>babel-plugin-transform-runtime</code>和<code>babel-polyfill</code>，在已经使用了<code>babel-polyfill</code>的基础上还是会担心使用新语法带来的问题。这篇文章将会解答一些与<code>babel-polyfill</code>相关的问题。</p>
+<a id="more"></a>
 <h2 id="polyfill_与_core-js">polyfill 与 core-js</h2><ul>
 <li>简单来说<code>polyfill</code>包括了<code>core-js</code>和<code>regenerator-runtime</code>(转义 async 和 await 的包)。</li>
 <li>而且 babel7.4.0 开始@babel/polyfill 改成直接引入<code>core-js</code>和<code>regenerator-runtime</code>了<blockquote>
@@ -444,19 +445,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">indexedDB</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">babel</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vue</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">webpack</a>
+                <a href="javascript:void(0)" class="js-tag color5">indexedDB</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -464,15 +457,23 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">websocket</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">babel</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">webpack-dev-server</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">webpack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">websocket</a>
               </li>
             
             <div class="clearfix"></div>
